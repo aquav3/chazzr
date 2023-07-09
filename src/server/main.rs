@@ -13,7 +13,7 @@ fn bind_to_ip(ip: &str) -> Option<TcpListener> {
 
 fn handle_stream(stream_data: (TcpStream, SocketAddr)) {
     println!("Accepted connection: {:?}", stream_data.1);
-    
+    loop {}    
 }
      
 
