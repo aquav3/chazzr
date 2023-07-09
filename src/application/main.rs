@@ -8,6 +8,10 @@ fn connect_to_ip(ip: &str) -> Option<TcpStream> {
 }
 
 fn main() {
-    let mut stream = connect_to_ip("127.0.0.1:8080");
-
+    if let Some(stream) = connect_to_ip("127.0.0.1:8080") {
+        println!("Connected to server!");
+    }  
+    else {
+        println!("Failed to connect to server!");
+    }
 }
