@@ -11,17 +11,16 @@ fn bind_to_ip(ip: &str) -> Option<TcpListener> {
     return None;
 }
 
-fn handle_stream(stream_data: (TcpStream, SocketAddr)) {
-    println!("Accepted connection: {:?}", stream_data.1);
-    loop {}    
+fn handle_stream(stream: TcpStream) {
+    println!("Accepted connection");    
 }
      
 
 fn main() {
     if let Some(listener) = bind_to_ip("127.0.0.1:8080") {
-        if let Ok(stream) = listener.accept() {
-            handle_stream(stream)
-        }           
+        for stream in listener.incoming() {
+            handle_stream(stream.unwrap())
+        }
     }   
     else {
         println!("Exiting the program due to the error!");
