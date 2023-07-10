@@ -1,7 +1,6 @@
 use std::net::*;
 use std::io::Write;
 use serde::*;
-use serde_json::Result;
 
 #[derive(Default, Serialize, Deserialize)]
 struct UserData {
