@@ -1,5 +1,6 @@
 use std::net::{TcpListener, TcpStream};
 use std::io::{Read, Write};
+use std::thread;
 use serde::{Serialize, Deserialize};
 
 #[derive(Default, Serialize, Deserialize)]
@@ -23,10 +24,12 @@ fn handle_stream(mut stream: TcpStream) {
     println!("Accepted connection");
 
     let mut buff = [0; 1024];
-
+    loop {
     stream.read(&mut buff).unwrap();
 
     println!("{}", String::from_utf8_lossy(&buff));
+    buff = [0; 1024];
+    }
 }
      
 
@@ -36,7 +39,7 @@ fn main() {
     if let Some(listener) = bind_to_ip("127.0.0.1:8080") {
         for stream in listener.incoming() {
             if stream.is_ok() {
-                handle_stream(stream.unwrap())
+                thread::spawn(move || handle_stream(stream.unwrap()));  
             }
         }
     }   
