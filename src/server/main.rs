@@ -15,11 +15,11 @@ fn bind_to_ip(ip: &str) -> Option<TcpListener> {
 fn handle_stream(mut stream: TcpStream) {
     println!("Accepted connection");
 
-    let mut buff = String::new();
+    let mut buff = [0; 1024];
 
-    stream.read_to_string(&mut buff).expect("Failed reading data");
+    stream.read(&mut buff).unwrap();
 
-    println!("{}", buff);
+    println!("{}", String::from_utf8_lossy(&buff));
 }
      
 
