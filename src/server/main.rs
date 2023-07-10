@@ -1,4 +1,5 @@
-use std::net::{TcpListener, TcpStream, SocketAddr};
+use std::net::{TcpListener, TcpStream};
+use std::io::{Read, Write};
 
 fn bind_to_ip(ip: &str) -> Option<TcpListener> {
     if let Ok(ls) = TcpListener::bind(ip) {
@@ -11,15 +12,17 @@ fn bind_to_ip(ip: &str) -> Option<TcpListener> {
     return None;
 }
 
-fn handle_stream(stream: TcpStream) {
-    println!("Accepted connection");    
+fn handle_stream(mut stream: TcpStream) {
+    println!("Accepted connection");
 }
      
 
 fn main() {
     if let Some(listener) = bind_to_ip("127.0.0.1:8080") {
         for stream in listener.incoming() {
-            handle_stream(stream.unwrap())
+            if stream.is_ok() {
+                handle_stream(stream.unwrap())
+            }
         }
     }   
     else {
