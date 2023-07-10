@@ -23,19 +23,19 @@ fn bind_to_ip(ip: &str) -> Option<TcpListener> {
 fn handle_stream(mut stream: TcpStream) {
     println!("Accepted connection");
 
-    let mut buff = [0; 1024];
     loop {
-    stream.read(&mut buff).unwrap();
-
-    println!("{}", String::from_utf8_lossy(&buff));
-    buff = [0; 1024];
+        let mut buff = [0; 1024];
+        let bytes_read = match stream.read(&mut buff) {
+            Ok(n) if n > 0 => n,
+            _ => break,
+        };
+        let message = String::from_utf8_lossy(&buff[..bytes_read]);
+        println!("{}", message);
     }
 }
      
 
 fn main() {
-    
-
     if let Some(listener) = bind_to_ip("127.0.0.1:8080") {
         for stream in listener.incoming() {
             if stream.is_ok() {
